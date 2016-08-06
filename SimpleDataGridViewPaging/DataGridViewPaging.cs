@@ -35,6 +35,8 @@ namespace SimpleDataGridViewPaging
         private int currentPageOffset = 0;
         private IDisposable lastDataSource = null;
 
+        private AutoModeHelper autoModeHelper = null;
+
         #endregion
 
         #region Properties
@@ -229,6 +231,19 @@ namespace SimpleDataGridViewPaging
             this.QueryData();
         }
 
+        /// <summary>
+        /// Using auto mode, <see cref="DataGridViewPaging"/> will auto query
+        /// and display data to <see cref="System.Windows.Forms.DataGridView"/>.
+        /// </summary>
+        /// <param name="connection">Database connection.</param>
+        /// <param name="tableName"><see cref="DataGridViewPaging"/> will query from this table name.</param>
+        public void UserHardMode(DbConnection connection, string tableName)
+        {
+            autoModeHelper?.Dispose();
+            autoModeHelper = new HardModeHelper(this, connection, tableName);
+            autoModeHelper.Initialize();
+        }
+
         private void QueryData()
         {
             RequestQueryData?.Invoke(this, new RequestQueryDataEventArgs(MaxRecords, currentPageOffset));
@@ -248,6 +263,7 @@ namespace SimpleDataGridViewPaging
         {
             this.Disposed -= DataGridViewPaging_Disposed;
             lastDataSource?.Dispose();
+            autoModeHelper?.Dispose();
         }
 
         #endregion
@@ -327,6 +343,60 @@ namespace SimpleDataGridViewPaging
                     bindingNavigatorPositionItem.Text = CurrentPage.ToString();
                 }
             }
+        }
+
+        #endregion
+
+        #region Auto Mode Helper Class
+
+        private abstract class AutoModeHelper : IDisposable
+        {
+            private readonly DataGridViewPaging dataGridViewPaging;
+            private readonly DbConnection connection;
+            protected string selectCountCommandText;
+            protected string selectColumnsCommandText;
+
+            public AutoModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection)
+            {
+                this.dataGridViewPaging = dataGridViewPaging;
+                this.connection = connection;
+                this.dataGridViewPaging.RequestQueryData += DataGridViewPaging_RequestQueryData;
+            }
+
+            public void Initialize()
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = selectCountCommandText;
+                    int numberOfRecords = Convert.ToInt32(command.ExecuteScalar());
+                    this.dataGridViewPaging.Initialize(numberOfRecords);
+                }
+            }
+
+            private void DataGridViewPaging_RequestQueryData(object sender, RequestQueryDataEventArgs e)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = string.Format("{0} LIMIT {1} OFFSET {2}", selectColumnsCommandText, e.MaxRecords, e.PageOffset);
+                    var reader = command.ExecuteReader();
+                    this.dataGridViewPaging.DataSource = reader;
+                }
+            }
+
+            public void Dispose()
+            {
+                this.dataGridViewPaging.RequestQueryData -= DataGridViewPaging_RequestQueryData;
+            }
+        }
+
+        private class HardModeHelper : AutoModeHelper
+        {
+            public HardModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection, string tableName)
+                : base(dataGridViewPaging, connection)
+            {
+                this.selectCountCommandText = string.Format("SELECT COUNT(*) FROM {0}", tableName);
+                this.selectColumnsCommandText = string.Format("SELECT * FROM {0}", tableName);
+            }            
         }
 
         #endregion
