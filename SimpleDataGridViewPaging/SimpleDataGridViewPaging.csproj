@@ -42,6 +42,8 @@
     <Compile Include="DataGridViewPaging.Designer.cs">
       <DependentUpon>DataGridViewPaging.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\QuantityRangeException.cs" />
+    <Compile Include="Exceptions\RuntimeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestQueryDataEventArgs.cs" />
   </ItemGroup>

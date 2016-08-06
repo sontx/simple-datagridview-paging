@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleDataGridViewPaging.Exceptions;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
@@ -74,6 +75,8 @@ namespace SimpleDataGridViewPaging
             get { return _maxRecords; }
             set
             {
+                if (value < 1)
+                    throw new QuantityRangeException("Max records must be at least 1.");
                 _maxRecords = value;
             }
         }
@@ -217,6 +220,8 @@ namespace SimpleDataGridViewPaging
         /// </param>
         public void Initialize(int numberOfRecords)
         {
+            if (numberOfRecords < 0)
+                throw new QuantityRangeException("Number of records must at least 0.");
             this.numberOfRecords = numberOfRecords;
             this.currentPageOffset = 0;
             this.lastDataSource?.Dispose();
