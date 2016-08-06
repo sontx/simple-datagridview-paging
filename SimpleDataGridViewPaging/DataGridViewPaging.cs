@@ -244,6 +244,19 @@ namespace SimpleDataGridViewPaging
             autoModeHelper.Initialize();
         }
 
+        /// <summary>
+        /// Using auto mode, <see cref="DataGridViewPaging"/> will auto query
+        /// and display data to <see cref="System.Windows.Forms.DataGridView"/>.
+        /// </summary>
+        /// <param name="connection">Database connection.</param>
+        /// <param name="selectCommandText"><see cref="DataGridViewPaging"/> .</param>
+        public void UserSoftMode(DbConnection connection, string selectCommandText)
+        {
+            autoModeHelper?.Dispose();
+            autoModeHelper = new SoftModeHelper(this, connection, selectCommandText);
+            autoModeHelper.Initialize();
+        }
+
         private void QueryData()
         {
             RequestQueryData?.Invoke(this, new RequestQueryDataEventArgs(MaxRecords, currentPageOffset));
@@ -397,6 +410,16 @@ namespace SimpleDataGridViewPaging
                 this.selectCountCommandText = string.Format("SELECT COUNT(*) FROM {0}", tableName);
                 this.selectColumnsCommandText = string.Format("SELECT * FROM {0}", tableName);
             }            
+        }
+
+        private class SoftModeHelper : AutoModeHelper
+        {
+            public SoftModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection, string selectCommandText)
+                : base(dataGridViewPaging, connection)
+            {
+                this.selectCountCommandText = string.Format("SELECT COUNT(*) {0}", selectCommandText.Substring(selectCommandText.IndexOf("FROM")));
+                this.selectColumnsCommandText = selectCommandText;
+            }
         }
 
         #endregion
