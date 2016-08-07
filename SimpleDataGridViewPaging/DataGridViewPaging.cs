@@ -179,7 +179,7 @@ namespace SimpleDataGridViewPaging
         {
             if (IsNotPaging)
             {
-                if (_autoHideNavigator)
+                if (_autoHideNavigator && ReadOnly)
                     bindingNavigator.Visible = false;
             }
             else
@@ -228,7 +228,7 @@ namespace SimpleDataGridViewPaging
             this.currentPageOffset = 0;
             this.lastDataSource?.Dispose();
             this.lastDataSource = null;
-            bindingNavigator.Visible = (numberOfRecords == 0 && AutoHideNavigator);
+            bindingNavigator.Visible = !(!HasRows && AutoHideNavigator && ReadOnly);
             this.QueryData();
         }
 
