@@ -1,12 +1,16 @@
 ﻿using SimpleDataGridViewPaging.Exceptions;
 using System;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Common;
 using System.Windows.Forms;
 
 namespace SimpleDataGridViewPaging
 {
+    /// <summary>
+    /// The <see cref="UserControl"/> contains <see cref="System.Windows.Forms.DataGridView"/> 
+    /// and <see cref="System.Windows.Forms.BindingNavigator"/> and it's capable of automatically paging. 
+    /// This <see cref="UserControl"/> provide two choices are auto query and manual query.
+    /// </summary>
     public partial class DataGridViewPaging : UserControl
     {
         private const string CATEGORY_CONTROL = "Control";
