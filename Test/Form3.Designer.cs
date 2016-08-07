@@ -49,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(374, 281);
             this.Controls.Add(this.dataGridViewPaging1);
             this.Name = "Form3";
-            this.Text = "Form3";
+            this.Text = "AutoMode: Soft";
             this.ResumeLayout(false);
 
         }

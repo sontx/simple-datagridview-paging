@@ -39,17 +39,17 @@
             this.dataGridViewPaging1.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewPaging1.MaxRecords = 100;
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
-            this.dataGridViewPaging1.Size = new System.Drawing.Size(284, 261);
+            this.dataGridViewPaging1.Size = new System.Drawing.Size(395, 310);
             this.dataGridViewPaging1.TabIndex = 0;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(395, 310);
             this.Controls.Add(this.dataGridViewPaging1);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.Text = "AutoMode: Hard";
             this.ResumeLayout(false);
 
         }

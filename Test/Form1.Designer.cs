@@ -33,8 +33,11 @@
             // 
             // dataGridViewPaging1
             // 
+            this.dataGridViewPaging1.AutoHideNavigator = false;
+            this.dataGridViewPaging1.DataSource = null;
             this.dataGridViewPaging1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPaging1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewPaging1.MaxRecords = 100;
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
             this.dataGridViewPaging1.Size = new System.Drawing.Size(462, 374);
             this.dataGridViewPaging1.TabIndex = 0;
@@ -46,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(462, 374);
             this.Controls.Add(this.dataGridViewPaging1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ManualMode";
             this.ResumeLayout(false);
 
         }
