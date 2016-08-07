@@ -228,6 +228,7 @@ namespace SimpleDataGridViewPaging
             this.currentPageOffset = 0;
             this.lastDataSource?.Dispose();
             this.lastDataSource = null;
+            bindingNavigator.Visible = (numberOfRecords == 0 && AutoHideNavigator);
             this.QueryData();
         }
 
@@ -409,7 +410,7 @@ namespace SimpleDataGridViewPaging
             {
                 this.selectCountCommandText = string.Format("SELECT COUNT(*) FROM {0}", tableName);
                 this.selectColumnsCommandText = string.Format("SELECT * FROM {0}", tableName);
-            }            
+            }
         }
 
         private class SoftModeHelper : AutoModeHelper
