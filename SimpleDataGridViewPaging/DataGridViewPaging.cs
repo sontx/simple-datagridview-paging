@@ -67,9 +67,19 @@ namespace In.Sontx.SimpleDataGridViewPaging
 
                 dataGridView.ReadOnly = _readonly;
 
-                bindingNavigatorAddNewItem.Visible = !_readonly;
-                bindingNavigatorDeleteItem.Visible = !_readonly;
-                bindingNavigatorSeparator2.Visible = !_readonly;
+                if (ReadOnly)
+                {
+                    bindingNavigator.Items.Remove(bindingNavigatorAddNewItem);
+                    bindingNavigator.Items.Remove(bindingNavigatorDeleteItem);
+                    bindingNavigator.Items.Remove(bindingNavigatorSeparator2);
+                }
+                else
+                {
+                    bindingNavigator.Items.Remove(bindingNavigatorSeparator2);
+                    bindingNavigator.Items.Remove(bindingNavigatorAddNewItem);
+                    bindingNavigator.Items.Remove(bindingNavigatorDeleteItem);
+                }
+                SetCenterHorizontalAlignment();
             }
         }
 
