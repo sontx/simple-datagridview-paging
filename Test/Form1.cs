@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
@@ -18,11 +11,14 @@ namespace Test
         public Form1()
         {
             InitializeComponent();
+            // connect to database
             connection = new SQLiteConnection("Data Source=chinook.db");
             connection.Open();
             
+            // register request query event
             dataGridViewPaging1.RequestQueryData += DataGridViewPaging1_RequestQueryData;
 
+            // set number of rows(records) and start query data
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT COUNT(*) FROM tracks";
@@ -33,6 +29,7 @@ namespace Test
 
         private void DataGridViewPaging1_RequestQueryData(object sender, SimpleDataGridViewPaging.RequestQueryDataEventArgs e)
         {
+            // query data and then set result to display
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM tracks LIMIT " + e.MaxRecords + " OFFSET " + e.PageOffset;
@@ -43,6 +40,7 @@ namespace Test
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            // free resource
             connection.Dispose();
         }
     }
