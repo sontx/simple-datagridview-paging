@@ -36,7 +36,6 @@
             this.dataGridViewPaging1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPaging1.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
-            this.dataGridViewPaging1.ReadOnly = true;
             this.dataGridViewPaging1.Size = new System.Drawing.Size(462, 374);
             this.dataGridViewPaging1.TabIndex = 0;
             // 

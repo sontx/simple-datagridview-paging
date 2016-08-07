@@ -51,10 +51,10 @@ namespace SimpleDataGridViewPaging
         [Category(CATEGORY_CONTROL)]
         public BindingNavigator BindingNavigator { get { return bindingNavigator; } }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Description("Gets or sets a value indicating whether DataGridView in the DataGridViewPaging is read-only.")]
         [Category(CATEGORY_BEHAVIOR)]
-        public bool ReadOnly
+        private bool ReadOnly
         {
             get { return _readonly; }
             set
@@ -152,6 +152,7 @@ namespace SimpleDataGridViewPaging
             InitializeComponent();
             SetCenterHorizontalAlignment();
             dataGridView.AutoGenerateColumns = true;
+            this.ReadOnly = true;
             this.Disposed += DataGridViewPaging_Disposed;
         }
 

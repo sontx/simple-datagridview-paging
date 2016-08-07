@@ -39,7 +39,6 @@
             this.dataGridViewPaging1.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewPaging1.MaxRecords = 100;
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
-            this.dataGridViewPaging1.ReadOnly = false;
             this.dataGridViewPaging1.Size = new System.Drawing.Size(284, 261);
             this.dataGridViewPaging1.TabIndex = 0;
             // 
