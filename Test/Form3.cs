@@ -2,7 +2,7 @@
 using System.Data.SQLite;
 using System.Windows.Forms;
 
-namespace Test
+namespace In.Sontx.Test
 {
     public partial class Form3 : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace SimpleDataGridViewPaging
+﻿namespace In.Sontx.SimpleDataGridViewPaging
 {
     partial class DataGridViewPaging
     {

@@ -1,4 +1,4 @@
-﻿namespace SimpleDataGridViewPaging.Exceptions
+﻿namespace In.Sontx.SimpleDataGridViewPaging.Exceptions
 {
     public class QuantityRangeException : RuntimeException
     {

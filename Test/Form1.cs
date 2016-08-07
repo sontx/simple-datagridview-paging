@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-namespace Test
+namespace In.Sontx.Test
 {
     public partial class Form1 : Form
     {
@@ -27,7 +27,7 @@ namespace Test
             }
         }
 
-        private void DataGridViewPaging1_RequestQueryData(object sender, SimpleDataGridViewPaging.RequestQueryDataEventArgs e)
+        private void DataGridViewPaging1_RequestQueryData(object sender, In.Sontx.SimpleDataGridViewPaging.RequestQueryDataEventArgs e)
         {
             // query data and then set result to display
             using (var command = connection.CreateCommand())

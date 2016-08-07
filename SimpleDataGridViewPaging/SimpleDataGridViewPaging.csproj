@@ -7,7 +7,7 @@
     <ProjectGuid>{8784A91A-10E1-4F2D-A233-EAF60275F2F0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleDataGridViewPaging</RootNamespace>
+    <RootNamespace>In.Sontx.SimpleDataGridViewPaging</RootNamespace>
     <AssemblyName>SimpleDataGridViewPaging</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

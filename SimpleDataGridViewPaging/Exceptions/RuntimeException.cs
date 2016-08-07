@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleDataGridViewPaging.Exceptions
+namespace In.Sontx.SimpleDataGridViewPaging.Exceptions
 {
     public abstract class RuntimeException : Exception
     {

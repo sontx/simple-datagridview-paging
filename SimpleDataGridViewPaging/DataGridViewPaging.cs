@@ -1,10 +1,10 @@
-﻿using SimpleDataGridViewPaging.Exceptions;
+﻿using In.Sontx.SimpleDataGridViewPaging.Exceptions;
 using System;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Windows.Forms;
 
-namespace SimpleDataGridViewPaging
+namespace In.Sontx.SimpleDataGridViewPaging
 {
     /// <summary>
     /// The <see cref="UserControl"/> contains <see cref="System.Windows.Forms.DataGridView"/> 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleDataGridViewPaging
+namespace In.Sontx.SimpleDataGridViewPaging
 {
     /// <summary>
     /// Represents the method that will handle an event that request a query data.

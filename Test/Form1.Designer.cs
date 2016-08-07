@@ -1,4 +1,4 @@
-﻿namespace Test
+﻿namespace In.Sontx.Test
 {
     partial class Form1
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridViewPaging1 = new SimpleDataGridViewPaging.DataGridViewPaging();
+            this.dataGridViewPaging1 = new In.Sontx.SimpleDataGridViewPaging.DataGridViewPaging();
             this.SuspendLayout();
             // 
             // dataGridViewPaging1
@@ -56,7 +56,7 @@
 
         #endregion
 
-        private SimpleDataGridViewPaging.DataGridViewPaging dataGridViewPaging1;
+        private In.Sontx.SimpleDataGridViewPaging.DataGridViewPaging dataGridViewPaging1;
     }
 }
 
