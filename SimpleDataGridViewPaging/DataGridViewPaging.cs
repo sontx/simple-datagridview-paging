@@ -70,7 +70,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         [Browsable(true)]
         [Description("DataGridView which DataGridViewPaging uses to perform data.")]
         [Category(CategoryControl)]
-        public DataGridView DataGridView { get; private set; }
+        public DataGridView DataGridView => dataGridView;
 
         [Browsable(true)]
         [Description("BindingNavigator which user uses to paging data in DataGridViewPaging.")]
