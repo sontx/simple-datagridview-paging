@@ -1,71 +1,93 @@
-﻿using In.Sontx.SimpleDataGridViewPaging.Exceptions;
+﻿using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 using System;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Windows.Forms;
 
-namespace In.Sontx.SimpleDataGridViewPaging
+namespace Code4Bugs.SimpleDataGridViewPaging
 {
+    /// <inheritdoc />
     /// <summary>
-    /// The <see cref="UserControl"/> contains <see cref="System.Windows.Forms.DataGridView"/> 
-    /// and <see cref="System.Windows.Forms.BindingNavigator"/> and it's capable of automatically paging. 
-    /// This <see cref="UserControl"/> provide two choices are auto query and manual query.
+    ///     The <see cref="T:System.Windows.Forms.UserControl" /> contains <see cref="T:System.Windows.Forms.DataGridView" />
+    ///     and <see cref="T:System.Windows.Forms.BindingNavigator" /> and it's capable of automatically paging.
+    ///     This <see cref="T:System.Windows.Forms.UserControl" /> provide two choices are auto query and manual query.
     /// </summary>
     public partial class DataGridViewPaging : UserControl
     {
-        private const string CATEGORY_CONTROL = "Control";
-        private const string CATEGORY_BEHAVIOR = "Behavior";
+        private const string CategoryControl = "Control";
+        private const string CategoryBehavior = "Behavior";
+
+        public DataGridViewPaging()
+        {
+            InitializeComponent();
+            SetCenterHorizontalAlignment();
+            DataGridView.AutoGenerateColumns = true;
+            ReadOnly = true;
+            Disposed += DataGridViewPaging_Disposed;
+        }
 
         #region Events
 
         /// <summary>
-        /// Occurs when a request query new data page.
-        /// You should query to database with some statements like 
-        /// <code>
-        /// SELECT * FROM my_table LIMIT maxRecords OFFSET pageOffset
-        /// </code>
+        ///     Occurs when a request query new data page.
+        ///     You should query to database with some statements like
+        ///     <code>
+        ///         SELECT * FROM my_table LIMIT maxRecords OFFSET pageOffset
+        ///     </code>
         /// </summary>
         public event RequestQueryDataEventHandler RequestQueryData;
 
-        #endregion
+        #endregion Events
+
+        #region DataGridView Event Handlers
+
+        private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke((MethodInvoker)UpdateNavigator);
+            else
+                UpdateNavigator();
+        }
+
+        #endregion DataGridView Event Handlers
 
         #region Variants
 
-        private bool _readonly = false;
+        private bool _readonly;
         private int _maxRecords = 100;
-        private bool _autoHideNavigator = false;
+        private bool _autoHideNavigator;
 
-        private int numberOfRecords = 0;
-        private int currentPageOffset = 0;
-        private IDisposable lastDataSource = null;
+        private int _numberOfRecords;
+        private int _currentPageOffset;
+        private IDisposable _lastDataSource;
 
-        private AutoModeHelper autoModeHelper = null;
+        private AutoModeHelper _autoModeHelper;
 
-        #endregion
+        #endregion Variants
 
         #region Properties
 
         [Browsable(true)]
         [Description("DataGridView which DataGridViewPaging uses to perform data.")]
-        [Category(CATEGORY_CONTROL)]
-        public DataGridView DataGridView { get { return dataGridView; } }
+        [Category(CategoryControl)]
+        public DataGridView DataGridView { get; private set; }
 
         [Browsable(true)]
         [Description("BindingNavigator which user uses to paging data in DataGridViewPaging.")]
-        [Category(CATEGORY_CONTROL)]
-        public BindingNavigator BindingNavigator { get { return bindingNavigator; } }
+        [Category(CategoryControl)]
+        public BindingNavigator BindingNavigator => bindingNavigator;
 
         [Browsable(false)]
         [Description("Gets or sets a value indicating whether DataGridView in the DataGridViewPaging is read-only.")]
-        [Category(CATEGORY_BEHAVIOR)]
+        [Category(CategoryBehavior)]
         private bool ReadOnly
         {
-            get { return _readonly; }
+            get => _readonly;
             set
             {
                 _readonly = value;
 
-                dataGridView.ReadOnly = _readonly;
+                DataGridView.ReadOnly = _readonly;
 
                 if (ReadOnly)
                 {
@@ -79,16 +101,17 @@ namespace In.Sontx.SimpleDataGridViewPaging
                     bindingNavigator.Items.Remove(bindingNavigatorAddNewItem);
                     bindingNavigator.Items.Remove(bindingNavigatorDeleteItem);
                 }
+
                 SetCenterHorizontalAlignment();
             }
         }
 
         [Browsable(true)]
         [Description("Gets or sets max records for each page.")]
-        [Category(CATEGORY_BEHAVIOR)]
+        [Category(CategoryBehavior)]
         public int MaxRecords
         {
-            get { return _maxRecords; }
+            get => _maxRecords;
             set
             {
                 if (value < 1)
@@ -99,10 +122,10 @@ namespace In.Sontx.SimpleDataGridViewPaging
 
         [Browsable(true)]
         [Description("Gets or sets max records for each page.")]
-        [Category(CATEGORY_BEHAVIOR)]
+        [Category(CategoryBehavior)]
         public bool AutoHideNavigator
         {
-            get { return _autoHideNavigator; }
+            get => _autoHideNavigator;
             set
             {
                 _autoHideNavigator = value;
@@ -112,24 +135,24 @@ namespace In.Sontx.SimpleDataGridViewPaging
 
         [Browsable(false)]
         [Description("Gets current page.")]
-        public int CurrentPage { get { return currentPageOffset / _maxRecords + 1; } }
+        public int CurrentPage => _currentPageOffset / _maxRecords + 1;
 
         [Browsable(false)]
         [Description("Gets total pages.")]
-        public int TotalPages { get { return (numberOfRecords - 1) / _maxRecords + 1; } }
+        public int TotalPages => (_numberOfRecords - 1) / _maxRecords + 1;
 
         [Browsable(false)]
         [Description("Gets or sets data source for DataGridViewPaging.")]
         public object DataSource
         {
-            get { return bindingSource.DataSource; }
+            get => bindingSource.DataSource;
             set
             {
-                lastDataSource?.Dispose();
-                if (value is IDisposable)
-                    lastDataSource = value as IDisposable;
+                _lastDataSource?.Dispose();
+                if (value is IDisposable disposable)
+                    _lastDataSource = disposable;
                 else
-                    lastDataSource = null;
+                    _lastDataSource = null;
                 if (InvokeRequired)
                     BeginInvoke((MethodInvoker)delegate { bindingSource.DataSource = value; });
                 else
@@ -137,9 +160,9 @@ namespace In.Sontx.SimpleDataGridViewPaging
             }
         }
 
-        private bool IsNotPaging { get { return TotalPages == 1 || !HasRows; } }
+        private bool IsNotPaging => TotalPages == 1 || !HasRows;
 
-        private bool HasRows { get { return numberOfRecords > 0; } }
+        private bool HasRows => _numberOfRecords > 0;
 
         private bool Nextable
         {
@@ -159,30 +182,19 @@ namespace In.Sontx.SimpleDataGridViewPaging
             }
         }
 
-        #endregion
-
-        public DataGridViewPaging()
-        {
-            InitializeComponent();
-            SetCenterHorizontalAlignment();
-            dataGridView.AutoGenerateColumns = true;
-            this.ReadOnly = true;
-            this.Disposed += DataGridViewPaging_Disposed;
-        }
+        #endregion Properties
 
         #region Methods
 
         private void SetCenterHorizontalAlignment()
         {
-            int totalItemsWidth = 0;
+            var totalItemsWidth = 0;
             var items = bindingNavigator.Items;
-            for (int i = 0; i < items.Count; i++)
-            {
+            for (var i = 0; i < items.Count; i++)
                 totalItemsWidth += items[i].Width;
-            }
 
-            int containerWidth = bindingNavigator.Width;
-            int marginLeft = (containerWidth - totalItemsWidth) / 2;
+            var containerWidth = bindingNavigator.Width;
+            var marginLeft = (containerWidth - totalItemsWidth) / 2;
 
             var firstItem = items[0];
             var firstItemMargin = firstItem.Margin;
@@ -199,8 +211,8 @@ namespace In.Sontx.SimpleDataGridViewPaging
             }
             else
             {
-                int totalPages = this.TotalPages;
-                int currentPage = this.CurrentPage;
+                var totalPages = TotalPages;
+                var currentPage = CurrentPage;
 
                 bindingNavigatorCountItem.Text = string.Format(bindingNavigator.CountItemFormat, totalPages);
                 bindingNavigatorPositionItem.Text = currentPage.ToString();
@@ -227,58 +239,58 @@ namespace In.Sontx.SimpleDataGridViewPaging
         }
 
         /// <summary>
-        /// Set number of records for <see cref="DataGridViewPaging"/>.
+        ///     Set number of records for <see cref="DataGridViewPaging" />.
         /// </summary>
         /// <param name="numberOfRecords">
-        /// Number of records, you could use some statements like
-        /// <code>
-        /// SELECT COUNT(*) FROM my_table
-        /// </code>
+        ///     Number of records, you could use some statements like
+        ///     <code>
+        ///         SELECT COUNT(*) FROM my_table
+        ///     </code>
         /// </param>
         public void Initialize(int numberOfRecords)
         {
             if (numberOfRecords < 0)
                 throw new QuantityRangeException("Number of records must at least 0.");
-            this.numberOfRecords = numberOfRecords;
-            this.currentPageOffset = 0;
-            this.lastDataSource?.Dispose();
-            this.lastDataSource = null;
+            _numberOfRecords = numberOfRecords;
+            _currentPageOffset = 0;
+            _lastDataSource?.Dispose();
+            _lastDataSource = null;
             bindingNavigator.Visible = !(!HasRows && AutoHideNavigator && ReadOnly);
-            this.QueryData();
+            QueryData();
         }
 
         /// <summary>
-        /// Using auto mode, <see cref="DataGridViewPaging"/> will auto query
-        /// and display data to <see cref="System.Windows.Forms.DataGridView"/>.
+        ///     Using auto mode, <see cref="DataGridViewPaging" /> will auto query
+        ///     and display data to <see cref="System.Windows.Forms.DataGridView" />.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="tableName"><see cref="DataGridViewPaging"/> will query from this table name.</param>
+        /// <param name="tableName"><see cref="DataGridViewPaging" /> will query from this table name.</param>
         public void UserHardMode(DbConnection connection, string tableName)
         {
-            autoModeHelper?.Dispose();
-            autoModeHelper = new HardModeHelper(this, connection, tableName);
-            autoModeHelper.Initialize();
+            _autoModeHelper?.Dispose();
+            _autoModeHelper = new HardModeHelper(this, connection, tableName);
+            _autoModeHelper.Initialize();
         }
 
         /// <summary>
-        /// Using auto mode, <see cref="DataGridViewPaging"/> will auto query
-        /// and display data to <see cref="System.Windows.Forms.DataGridView"/>.
+        ///     Using auto mode, <see cref="DataGridViewPaging" /> will auto query
+        ///     and display data to <see cref="System.Windows.Forms.DataGridView" />.
         /// </summary>
         /// <param name="connection">Database connection.</param>
-        /// <param name="selectCommandText"><see cref="DataGridViewPaging"/> .</param>
+        /// <param name="selectCommandText"><see cref="DataGridViewPaging" /> .</param>
         public void UserSoftMode(DbConnection connection, string selectCommandText)
         {
-            autoModeHelper?.Dispose();
-            autoModeHelper = new SoftModeHelper(this, connection, selectCommandText);
-            autoModeHelper.Initialize();
+            _autoModeHelper?.Dispose();
+            _autoModeHelper = new SoftModeHelper(this, connection, selectCommandText);
+            _autoModeHelper.Initialize();
         }
 
         private void QueryData()
         {
-            RequestQueryData?.Invoke(this, new RequestQueryDataEventArgs(MaxRecords, currentPageOffset));
+            RequestQueryData?.Invoke(this, new RequestQueryDataEventArgs(MaxRecords, _currentPageOffset));
         }
 
-        #endregion
+        #endregion Methods
 
         #region UserControl Event Handlers
 
@@ -290,131 +302,114 @@ namespace In.Sontx.SimpleDataGridViewPaging
 
         private void DataGridViewPaging_Disposed(object sender, EventArgs e)
         {
-            this.Disposed -= DataGridViewPaging_Disposed;
-            lastDataSource?.Dispose();
-            autoModeHelper?.Dispose();
+            Disposed -= DataGridViewPaging_Disposed;
+            _lastDataSource?.Dispose();
+            _autoModeHelper?.Dispose();
         }
 
-        #endregion
-
-        #region DataGridView Event Handlers
-
-        private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {
-            if (InvokeRequired)
-                BeginInvoke((MethodInvoker)delegate { UpdateNavigator(); });
-            else
-                UpdateNavigator();
-        }
-
-        #endregion
+        #endregion UserControl Event Handlers
 
         #region BindingNavigator Event Handlers
 
         private void bindingNavigatorMoveFirstItem_Click(object sender, EventArgs e)
         {
-            currentPageOffset = 0;
+            _currentPageOffset = 0;
             QueryData();
         }
 
         private void bindingNavigatorMovePreviousItem_Click(object sender, EventArgs e)
         {
-            currentPageOffset -= MaxRecords;
+            _currentPageOffset -= MaxRecords;
             QueryData();
         }
 
         private void bindingNavigatorMoveNextItem_Click(object sender, EventArgs e)
         {
-            currentPageOffset += MaxRecords;
+            _currentPageOffset += MaxRecords;
             QueryData();
         }
 
         private void bindingNavigatorMoveLastItem_Click(object sender, EventArgs e)
         {
-            currentPageOffset = (TotalPages - 1) * MaxRecords;
+            _currentPageOffset = (TotalPages - 1) * MaxRecords;
             QueryData();
         }
 
         private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void bindingNavigatorPositionItem_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Enter)
+            if (e.KeyChar != (char) Keys.Enter) return;
+
+            if (int.TryParse(bindingNavigatorPositionItem.Text, out var pageNumber))
             {
-                int pageNumber;
-                if (int.TryParse(bindingNavigatorPositionItem.Text, out pageNumber))
+                if (pageNumber == CurrentPage) return;
+
+                var totalPages = TotalPages;
+                if (pageNumber < 1 || pageNumber > totalPages)
                 {
-                    if (pageNumber != CurrentPage)
-                    {
-                        int totalPages = this.TotalPages;
-                        if (pageNumber < 1 || pageNumber > totalPages)
-                        {
-                            currentPageOffset = (pageNumber - 1) * MaxRecords;
-                            QueryData();
-                        }
-                        else
-                        {
-                            MessageBox.Show(string.Format("Page number must be from 1 to {0}.", totalPages), Application.ProductName);
-                        }
-                    }
+                    _currentPageOffset = (pageNumber - 1) * MaxRecords;
+                    QueryData();
                 }
                 else
                 {
-                    MessageBox.Show("You must enter a page number to navigate.", Application.ProductName);
-                    bindingNavigatorPositionItem.Text = CurrentPage.ToString();
+                    MessageBox.Show($@"Page number must be from 1 to {totalPages}.", Application.ProductName);
                 }
+            }
+            else
+            {
+                MessageBox.Show(@"You must enter a page number to navigate.", Application.ProductName);
+                bindingNavigatorPositionItem.Text = CurrentPage.ToString();
             }
         }
 
-        #endregion
+        #endregion BindingNavigator Event Handlers
 
         #region Auto Mode Helper Class
 
         private abstract class AutoModeHelper : IDisposable
         {
-            private readonly DataGridViewPaging dataGridViewPaging;
-            private readonly DbConnection connection;
-            protected string selectCountCommandText;
-            protected string selectColumnsCommandText;
+            private readonly DbConnection _connection;
+            private readonly DataGridViewPaging _dataGridViewPaging;
+            protected string SelectColumnsCommandText;
+            protected string SelectCountCommandText;
 
-            public AutoModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection)
+            protected AutoModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection)
             {
-                this.dataGridViewPaging = dataGridViewPaging;
-                this.connection = connection;
-                this.dataGridViewPaging.RequestQueryData += DataGridViewPaging_RequestQueryData;
+                _dataGridViewPaging = dataGridViewPaging;
+                _connection = connection;
+                _dataGridViewPaging.RequestQueryData += DataGridViewPaging_RequestQueryData;
+            }
+
+            public void Dispose()
+            {
+                _dataGridViewPaging.RequestQueryData -= DataGridViewPaging_RequestQueryData;
             }
 
             public void Initialize()
             {
-                using (var command = connection.CreateCommand())
+                using (var command = _connection.CreateCommand())
                 {
-                    command.CommandText = selectCountCommandText;
-                    int numberOfRecords = Convert.ToInt32(command.ExecuteScalar());
-                    this.dataGridViewPaging.Initialize(numberOfRecords);
+                    command.CommandText = SelectCountCommandText;
+                    var numberOfRecords = Convert.ToInt32(command.ExecuteScalar());
+                    _dataGridViewPaging.Initialize(numberOfRecords);
                 }
             }
 
             private void DataGridViewPaging_RequestQueryData(object sender, RequestQueryDataEventArgs e)
             {
-                using (var command = connection.CreateCommand())
+                using (var command = _connection.CreateCommand())
                 {
-                    command.CommandText = string.Format("{0} LIMIT {1} OFFSET {2}", selectColumnsCommandText, e.MaxRecords, e.PageOffset);
+                    command.CommandText = $"{SelectColumnsCommandText} LIMIT {e.MaxRecords} OFFSET {e.PageOffset}";
                     var reader = command.ExecuteReader();
-                    this.dataGridViewPaging.DataSource = reader;
+                    _dataGridViewPaging.DataSource = reader;
                 }
-            }
-
-            public void Dispose()
-            {
-                this.dataGridViewPaging.RequestQueryData -= DataGridViewPaging_RequestQueryData;
             }
         }
 
@@ -423,21 +418,24 @@ namespace In.Sontx.SimpleDataGridViewPaging
             public HardModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection, string tableName)
                 : base(dataGridViewPaging, connection)
             {
-                this.selectCountCommandText = string.Format("SELECT COUNT(*) FROM {0}", tableName);
-                this.selectColumnsCommandText = string.Format("SELECT * FROM {0}", tableName);
+                SelectCountCommandText = $"SELECT COUNT(*) FROM {tableName}";
+                SelectColumnsCommandText = $"SELECT * FROM {tableName}";
             }
         }
 
         private class SoftModeHelper : AutoModeHelper
         {
-            public SoftModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection, string selectCommandText)
+            public SoftModeHelper(
+                DataGridViewPaging dataGridViewPaging, 
+                DbConnection connection,
+                string selectCommandText)
                 : base(dataGridViewPaging, connection)
             {
-                this.selectCountCommandText = string.Format("SELECT COUNT(*) {0}", selectCommandText.Substring(selectCommandText.IndexOf("FROM")));
-                this.selectColumnsCommandText = selectCommandText;
+                SelectCountCommandText = $"SELECT COUNT(*) {selectCommandText.Substring(selectCommandText.IndexOf("FROM", StringComparison.Ordinal))}";
+                SelectColumnsCommandText = selectCommandText;
             }
         }
 
-        #endregion
+        #endregion Auto Mode Helper Class
     }
 }

@@ -7,7 +7,7 @@
     <ProjectGuid>{8784A91A-10E1-4F2D-A233-EAF60275F2F0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>In.Sontx.SimpleDataGridViewPaging</RootNamespace>
+    <RootNamespace>Code4Bugs.SimpleDataGridViewPaging</RootNamespace>
     <AssemblyName>SimpleDataGridViewPaging</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,7 +43,6 @@
       <DependentUpon>DataGridViewPaging.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\QuantityRangeException.cs" />
-    <Compile Include="Exceptions\RuntimeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestQueryDataEventArgs.cs" />
   </ItemGroup>

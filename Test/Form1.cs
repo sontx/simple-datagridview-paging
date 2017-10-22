@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Windows.Forms;
 
-namespace In.Sontx.Test
+namespace Code4Bugs.SimpleDataGridViewPaging.Test
 {
     public partial class Form1 : Form
     {
-        private SQLiteConnection connection;
+        private readonly SQLiteConnection _connection;
 
         public Form1()
         {
             InitializeComponent();
             // connect to database
-            connection = new SQLiteConnection("Data Source=chinook.db");
-            connection.Open();
-            
+            _connection = new SQLiteConnection("Data Source=chinook.db");
+            _connection.Open();
+
             // register request query event
             dataGridViewPaging1.RequestQueryData += DataGridViewPaging1_RequestQueryData;
 
             // set number of rows(records) and start query data
-            using (var command = connection.CreateCommand())
+            using (var command = _connection.CreateCommand())
             {
                 command.CommandText = "SELECT COUNT(*) FROM tracks";
                 var reader = command.ExecuteScalar();
@@ -27,10 +27,10 @@ namespace In.Sontx.Test
             }
         }
 
-        private void DataGridViewPaging1_RequestQueryData(object sender, In.Sontx.SimpleDataGridViewPaging.RequestQueryDataEventArgs e)
+        private void DataGridViewPaging1_RequestQueryData(object sender, RequestQueryDataEventArgs e)
         {
             // query data and then set result to display
-            using (var command = connection.CreateCommand())
+            using (var command = _connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM tracks LIMIT " + e.MaxRecords + " OFFSET " + e.PageOffset;
                 dataGridViewPaging1.DataSource = command.ExecuteReader();
@@ -41,7 +41,7 @@ namespace In.Sontx.Test
         {
             base.OnClosed(e);
             // free resource
-            connection.Dispose();
+            _connection.Dispose();
         }
     }
 }

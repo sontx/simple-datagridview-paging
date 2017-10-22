@@ -1,8 +1,15 @@
-﻿namespace In.Sontx.SimpleDataGridViewPaging.Exceptions
+﻿using System;
+
+namespace Code4Bugs.SimpleDataGridViewPaging.Exceptions
 {
-    public class QuantityRangeException : RuntimeException
+    public class QuantityRangeException : Exception
     {
-        public QuantityRangeException() { }
-        public QuantityRangeException(string message) : base(message) { }
+        public QuantityRangeException()
+        {
+        }
+
+        public QuantityRangeException(string message) : base(message)
+        {
+        }
     }
 }
