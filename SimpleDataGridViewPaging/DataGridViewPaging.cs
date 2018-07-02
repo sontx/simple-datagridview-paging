@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Windows.Forms;
+using Code4Bugs.SimpleDataGridViewPaging.Helper;
 
 namespace Code4Bugs.SimpleDataGridViewPaging
 {
@@ -20,7 +21,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         public DataGridViewPaging()
         {
             InitializeComponent();
-            SetCenterHorizontalAlignment();
+            AlignNavigatorToCenter();
             DataGridView.AutoGenerateColumns = true;
             ReadOnly = true;
             Disposed += DataGridViewPaging_Disposed;
@@ -44,7 +45,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (InvokeRequired)
-                BeginInvoke((MethodInvoker)UpdateNavigator);
+                BeginInvoke((MethodInvoker) UpdateNavigator);
             else
                 UpdateNavigator();
         }
@@ -102,7 +103,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                     bindingNavigator.Items.Remove(bindingNavigatorDeleteItem);
                 }
 
-                SetCenterHorizontalAlignment();
+                AlignNavigatorToCenter();
             }
         }
 
@@ -154,7 +155,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                 else
                     _lastDataSource = null;
                 if (InvokeRequired)
-                    BeginInvoke((MethodInvoker)delegate { bindingSource.DataSource = value; });
+                    BeginInvoke((MethodInvoker) delegate { bindingSource.DataSource = value; });
                 else
                     bindingSource.DataSource = value;
             }
@@ -186,7 +187,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
 
         #region Methods
 
-        private void SetCenterHorizontalAlignment()
+        private void AlignNavigatorToCenter()
         {
             var totalItemsWidth = 0;
             var items = bindingNavigator.Items;
@@ -250,7 +251,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         public void Initialize(int numberOfRecords)
         {
             if (numberOfRecords < 0)
-                throw new QuantityRangeException("Number of records must at least 0.");
+                throw new QuantityRangeException("Number of records must >= 0.");
             _numberOfRecords = numberOfRecords;
             _currentPageOffset = 0;
             _lastDataSource?.Dispose();
@@ -297,7 +298,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);
-            SetCenterHorizontalAlignment();
+            AlignNavigatorToCenter();
         }
 
         private void DataGridViewPaging_Disposed(object sender, EventArgs e)
@@ -370,72 +371,5 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         }
 
         #endregion BindingNavigator Event Handlers
-
-        #region Auto Mode Helper Class
-
-        private abstract class AutoModeHelper : IDisposable
-        {
-            private readonly DbConnection _connection;
-            private readonly DataGridViewPaging _dataGridViewPaging;
-            protected string SelectColumnsCommandText;
-            protected string SelectCountCommandText;
-
-            protected AutoModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection)
-            {
-                _dataGridViewPaging = dataGridViewPaging;
-                _connection = connection;
-                _dataGridViewPaging.RequestQueryData += DataGridViewPaging_RequestQueryData;
-            }
-
-            public void Dispose()
-            {
-                _dataGridViewPaging.RequestQueryData -= DataGridViewPaging_RequestQueryData;
-            }
-
-            public void Initialize()
-            {
-                using (var command = _connection.CreateCommand())
-                {
-                    command.CommandText = SelectCountCommandText;
-                    var numberOfRecords = Convert.ToInt32(command.ExecuteScalar());
-                    _dataGridViewPaging.Initialize(numberOfRecords);
-                }
-            }
-
-            private void DataGridViewPaging_RequestQueryData(object sender, RequestQueryDataEventArgs e)
-            {
-                using (var command = _connection.CreateCommand())
-                {
-                    command.CommandText = $"{SelectColumnsCommandText} LIMIT {e.MaxRecords} OFFSET {e.PageOffset}";
-                    var reader = command.ExecuteReader();
-                    _dataGridViewPaging.DataSource = reader;
-                }
-            }
-        }
-
-        private class HardModeHelper : AutoModeHelper
-        {
-            public HardModeHelper(DataGridViewPaging dataGridViewPaging, DbConnection connection, string tableName)
-                : base(dataGridViewPaging, connection)
-            {
-                SelectCountCommandText = $"SELECT COUNT(*) FROM {tableName}";
-                SelectColumnsCommandText = $"SELECT * FROM {tableName}";
-            }
-        }
-
-        private class SoftModeHelper : AutoModeHelper
-        {
-            public SoftModeHelper(
-                DataGridViewPaging dataGridViewPaging, 
-                DbConnection connection,
-                string selectCommandText)
-                : base(dataGridViewPaging, connection)
-            {
-                SelectCountCommandText = $"SELECT COUNT(*) {selectCommandText.Substring(selectCommandText.IndexOf("FROM", StringComparison.Ordinal))}";
-                SelectColumnsCommandText = selectCommandText;
-            }
-        }
-
-        #endregion Auto Mode Helper Class
     }
 }
