@@ -291,6 +291,12 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             RequestQueryData?.Invoke(this, new RequestQueryDataEventArgs(MaxRecords, _currentPageOffset));
         }
 
+        protected override void OnLayout(LayoutEventArgs e)
+        {
+            base.OnLayout(e);
+            AlignNavigatorToCenter();
+        }
+
         #endregion Methods
 
         #region UserControl Event Handlers
