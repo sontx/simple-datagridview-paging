@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SimpleDataGridViewPaging")]
-[assembly: AssemblyDescription("A simple UserControl that is automatically paging")]
+[assembly: AssemblyDescription("A simple UserControl that shows the data-table and paging automatically.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("www.sontx.in")]
+[assembly: AssemblyCompany("www.code4bugs.com")]
 [assembly: AssemblyProduct("SimpleDataGridViewPaging")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
