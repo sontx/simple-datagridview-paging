@@ -3,6 +3,10 @@ using System.Data.Common;
 
 namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
 {
+    /// <inheritdoc cref="RowsStatementBuilder" />
+    /// <summary>
+    /// This supports updatable mode, the user needs to pass one more parameter is <see cref="DbCommandBuilder"/>.
+    /// </summary>
     public class UpdatableRowsStatementBuilder : RowsStatementBuilder, IDisposable
     {
         private DbCommandBuilder _commandBuilder;

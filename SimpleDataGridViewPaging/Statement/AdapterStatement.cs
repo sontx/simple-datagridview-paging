@@ -4,6 +4,10 @@ using System.Data.Common;
 
 namespace Code4Bugs.SimpleDataGridViewPaging.Statement
 {
+    /// <inheritdoc cref="IStatement{T}" />
+    /// <summary>
+    /// The statement supports the update capability.
+    /// </summary>
     public class AdapterStatement : IStatement<DataTable>, IDisposable
     {
         private readonly DbDataAdapter _adapter;

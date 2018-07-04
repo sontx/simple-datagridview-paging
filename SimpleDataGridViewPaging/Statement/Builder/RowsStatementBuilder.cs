@@ -1,5 +1,8 @@
 ﻿namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
 {
+    /// <summary>
+    /// Queries data rows of the table.
+    /// </summary>
     public class RowsStatementBuilder : StatementBuilder<object>
     {
         protected int _maxRecords;

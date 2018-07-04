@@ -2,6 +2,10 @@
 
 namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
 {
+    /// <summary>
+    /// Builds a <see cref="IStatement{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">Return type of <see cref="IStatement{T}"/></typeparam>
     public abstract class StatementBuilder<T>
     {
         protected string _commandText;
