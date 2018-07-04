@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Code4Bugs.SimpleDataGridViewPaging.Test
+namespace Code4Bugs.SimpleDataGridViewPaging.Examples
 {
     internal static class Program
     {
@@ -13,7 +13,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Test
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form3());
+            Application.Run(new MainForm());
         }
     }
 }

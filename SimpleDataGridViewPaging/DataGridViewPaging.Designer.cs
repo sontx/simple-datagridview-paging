@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataGridViewPaging));
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this._gridView = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
+            this._navigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -45,28 +45,28 @@
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._gridView)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
-            this.bindingNavigator.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._navigator)).BeginInit();
+            this._navigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
-            this.dataGridView.AutoGenerateColumns = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.DataSource = this.bindingSource;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(330, 220);
-            this.dataGridView.TabIndex = 0;
-            this.dataGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridView_DataBindingComplete);
+            this._gridView.AutoGenerateColumns = false;
+            this._gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._gridView.DataSource = this.bindingSource;
+            this._gridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridView.Location = new System.Drawing.Point(0, 0);
+            this._gridView.Name = "_gridView";
+            this._gridView.Size = new System.Drawing.Size(330, 220);
+            this._gridView.TabIndex = 0;
+            this._gridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridView_DataBindingComplete);
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.bindingNavigator);
+            this.panel1.Controls.Add(this._navigator);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 220);
             this.panel1.Name = "panel1";
@@ -75,12 +75,12 @@
             // 
             // bindingNavigator
             // 
-            this.bindingNavigator.AddNewItem = this.bindingNavigatorAddNewItem;
-            this.bindingNavigator.CountItem = this.bindingNavigatorCountItem;
-            this.bindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
-            this.bindingNavigator.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bindingNavigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._navigator.AddNewItem = this.bindingNavigatorAddNewItem;
+            this._navigator.CountItem = this.bindingNavigatorCountItem;
+            this._navigator.DeleteItem = this.bindingNavigatorDeleteItem;
+            this._navigator.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._navigator.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._navigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bindingNavigatorMoveFirstItem,
             this.bindingNavigatorMovePreviousItem,
             this.bindingNavigatorSeparator,
@@ -92,16 +92,16 @@
             this.bindingNavigatorSeparator2,
             this.bindingNavigatorAddNewItem,
             this.bindingNavigatorDeleteItem});
-            this.bindingNavigator.Location = new System.Drawing.Point(0, 0);
-            this.bindingNavigator.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
-            this.bindingNavigator.MoveLastItem = this.bindingNavigatorMoveLastItem;
-            this.bindingNavigator.MoveNextItem = this.bindingNavigatorMoveNextItem;
-            this.bindingNavigator.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
-            this.bindingNavigator.Name = "bindingNavigator";
-            this.bindingNavigator.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.bindingNavigator.Size = new System.Drawing.Size(330, 38);
-            this.bindingNavigator.TabIndex = 0;
+            this._navigator.Location = new System.Drawing.Point(0, 0);
+            this._navigator.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
+            this._navigator.MoveLastItem = this.bindingNavigatorMoveLastItem;
+            this._navigator.MoveNextItem = this.bindingNavigatorMoveNextItem;
+            this._navigator.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
+            this._navigator.Name = "_navigator";
+            this._navigator.PositionItem = this.bindingNavigatorPositionItem;
+            this._navigator.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this._navigator.Size = new System.Drawing.Size(330, 38);
+            this._navigator.TabIndex = 0;
             // 
             // bindingNavigatorMoveFirstItem
             // 
@@ -199,16 +199,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.dataGridView);
+            this.Controls.Add(this._gridView);
             this.Controls.Add(this.panel1);
             this.Name = "DataGridViewPaging";
             this.Size = new System.Drawing.Size(330, 258);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._gridView)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).EndInit();
-            this.bindingNavigator.ResumeLayout(false);
-            this.bindingNavigator.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._navigator)).EndInit();
+            this._navigator.ResumeLayout(false);
+            this._navigator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -216,9 +216,9 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridView _gridView;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.BindingNavigator bindingNavigator;
+        private System.Windows.Forms.BindingNavigator _navigator;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;

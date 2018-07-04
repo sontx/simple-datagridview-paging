@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Code4Bugs.SimpleDataGridViewPaging.Test.Properties {
+namespace Code4Bugs.SimpleDataGridViewPaging.Examples.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Test.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Code4Bugs.SimpleDataGridViewPaging.Test.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Code4Bugs.SimpleDataGridViewPaging.Examples.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

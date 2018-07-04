@@ -1,6 +1,6 @@
-﻿namespace Code4Bugs.SimpleDataGridViewPaging.Test
+﻿namespace Code4Bugs.SimpleDataGridViewPaging.Examples
 {
-    partial class Form2
+    partial class AutoQueryWithReadOnlyForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,28 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridViewPaging1 = new DataGridViewPaging();
+            this.dataGridViewPaging1 = new Code4Bugs.SimpleDataGridViewPaging.DataGridViewPaging();
             this.SuspendLayout();
             // 
             // dataGridViewPaging1
             // 
             this.dataGridViewPaging1.AutoHideNavigator = false;
             this.dataGridViewPaging1.DataSource = null;
+            this.dataGridViewPaging1.DbRequestHandler = null;
             this.dataGridViewPaging1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPaging1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewPaging1.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridViewPaging1.MaxRecords = 100;
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
-            this.dataGridViewPaging1.Size = new System.Drawing.Size(395, 310);
+            this.dataGridViewPaging1.ReadOnly = false;
+            this.dataGridViewPaging1.Size = new System.Drawing.Size(616, 460);
             this.dataGridViewPaging1.TabIndex = 0;
             // 
-            // Form2
+            // AutoQueryInReadOnlyForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(395, 310);
+            this.ClientSize = new System.Drawing.Size(616, 460);
             this.Controls.Add(this.dataGridViewPaging1);
-            this.Name = "Form2";
-            this.Text = "AutoMode: Hard";
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "AutoQueryInReadOnlyForm";
+            this.Text = "Auto Query With ReadOnly";
             this.ResumeLayout(false);
 
         }
@@ -59,3 +63,4 @@
         private DataGridViewPaging dataGridViewPaging1;
     }
 }
+
