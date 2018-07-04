@@ -5,8 +5,8 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement
 {
     public class ScalarStatement : IStatement<int>
     {
-        private readonly IDbConnection _connection;
         private readonly string _commandText;
+        private readonly IDbConnection _connection;
 
         public ScalarStatement(IDbConnection connection, string commandText)
         {

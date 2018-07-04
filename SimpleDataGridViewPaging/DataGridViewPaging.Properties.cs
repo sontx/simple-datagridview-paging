@@ -1,20 +1,19 @@
-﻿using System;
-using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
+using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 
 namespace Code4Bugs.SimpleDataGridViewPaging
 {
     public partial class DataGridViewPaging
     {
-        private NavigatorHorizontal _navigatorHorizontal;
         private const string CategoryControl = "Control";
         private const string CategoryBehavior = "Behavior";
+        private NavigatorHorizontal _navigatorHorizontal;
 
         [Browsable(true)]
         [Description("The original DataGridView control.")]
         [Category(CategoryControl)]
-        public DataGridView GridView => _gridView;
+        public DataGridView GridView { get; private set; }
 
         [Browsable(true)]
         [Description("The original BindingNavigator control.")]

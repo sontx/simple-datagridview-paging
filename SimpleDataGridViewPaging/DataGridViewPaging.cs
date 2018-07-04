@@ -1,27 +1,34 @@
-﻿using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 
 namespace Code4Bugs.SimpleDataGridViewPaging
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     /// <summary>
-    /// The <see cref="T:System.Windows.Forms.UserControl" /> contains a <see cref="T:System.Windows.Forms.DataGridView" />
-    /// and a <see cref="T:System.Windows.Forms.BindingNavigator" /> and it's capable of paging automatically.
+    ///     The <see cref="T:System.Windows.Forms.UserControl" /> contains a <see cref="T:System.Windows.Forms.DataGridView" />
+    ///     and a <see cref="T:System.Windows.Forms.BindingNavigator" /> and it's capable of paging automatically.
     /// </summary>
     public partial class DataGridViewPaging : UserControl
     {
         private const int MagicNumber = 10;
-
-        private ReadOnlyMode _readonly;
-        private bool _computedReadOnly;
-        private int _maxRecords = 100;
         private bool _autoHideNavigator;
-
-        private int _numberOfRecords;
+        private bool _computedReadOnly;
         private int _currentPageOffset;
         private IDbRequestHandler _dbRequestHandler;
+        private int _maxRecords = 100;
+
+        private int _numberOfRecords;
+
+        private ReadOnlyMode _readonly;
+
+        public DataGridViewPaging()
+        {
+            InitializeComponent();
+            GridView.AutoGenerateColumns = true;
+            Disposed += DataGridViewPaging_Disposed;
+        }
 
         private bool IsNotPaging => TotalPages == 1 || !HasRows;
 
@@ -33,20 +40,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             set
             {
                 _computedReadOnly = value;
-
-                if (_computedReadOnly)
-                {
-                    bindingNavigatorAddNewItem.Visible = false;
-                    bindingNavigatorDeleteItem.Visible = false;
-                    bindingNavigatorSeparator2.Visible = false;
-                }
-                else
-                {
-                    bindingNavigatorAddNewItem.Enabled = true;
-                    bindingNavigatorDeleteItem.Enabled = true;
-                    bindingNavigatorSeparator2.Enabled = true;
-                }
-
                 PerformLayout();
             }
         }
@@ -73,13 +66,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             _currentPageOffset = 0;
             DataSource = null;
             QueryData();
-        }
-
-        public DataGridViewPaging()
-        {
-            InitializeComponent();
-            GridView.AutoGenerateColumns = true;
-            Disposed += DataGridViewPaging_Disposed;
         }
 
         private void QueryData()
@@ -138,10 +124,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
 
         private void ComputeReadOnlyIfNecessary()
         {
-            if (DataSource != null && ReadOnly == ReadOnlyMode.Default)
-            {
-                ComputedReadOnly = !(DataSource is DataTable);
-            }
+            if (DataSource != null && ReadOnly == ReadOnlyMode.Default) ComputedReadOnly = !(DataSource is DataTable);
         }
 
         protected override void OnLayout(LayoutEventArgs e)

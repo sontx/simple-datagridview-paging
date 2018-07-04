@@ -4,9 +4,9 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
 {
     public abstract class StatementBuilder<T>
     {
-        protected string _tableName;
         protected string _commandText;
         protected DbConnection _connection;
+        protected string _tableName;
 
         public StatementBuilder<T> Connection(DbConnection connection)
         {

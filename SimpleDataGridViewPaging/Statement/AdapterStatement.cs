@@ -6,8 +6,8 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement
 {
     public class AdapterStatement : IStatement<DataTable>, IDisposable
     {
-        private readonly DbCommandBuilder _commandBuilder;
         private readonly DbDataAdapter _adapter;
+        private readonly DbCommandBuilder _commandBuilder;
         private DataTable _dataTable;
 
         public AdapterStatement(DbCommand selectCommand, DbCommandBuilder commandBuilder)
@@ -18,6 +18,11 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement
             _adapter.UpdateCommand = commandBuilder.GetUpdateCommand();
             _adapter.InsertCommand = commandBuilder.GetInsertCommand();
             _adapter.DeleteCommand = commandBuilder.GetDeleteCommand();
+        }
+
+        public void Dispose()
+        {
+            DisposeTableIfNecessary();
         }
 
         public virtual DataTable Execute()
@@ -35,11 +40,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement
                 _adapter.Update(_dataTable);
                 _dataTable.Dispose();
             }
-        }
-
-        public void Dispose()
-        {
-            DisposeTableIfNecessary();
         }
     }
 }

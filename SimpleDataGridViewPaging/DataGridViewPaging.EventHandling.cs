@@ -14,7 +14,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (InvokeRequired)
-                BeginInvoke((MethodInvoker)UpdateNavigatorButtons);
+                BeginInvoke((MethodInvoker) UpdateNavigatorButtons);
             else
                 UpdateNavigatorButtons();
         }
@@ -43,17 +43,9 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             QueryData();
         }
 
-        private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
-        {
-        }
-
         private void bindingNavigatorPositionItem_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != (char)Keys.Enter) return;
+            if (e.KeyChar != (char) Keys.Enter) return;
 
             if (int.TryParse(bindingNavigatorPositionItem.Text, out var pageNumber))
             {

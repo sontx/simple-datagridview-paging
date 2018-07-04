@@ -8,35 +8,21 @@ namespace Code4Bugs.SimpleDataGridViewPaging
 {
     public class DbRequestHandler : IDbRequestHandler
     {
-        private int _numberOfRecords = -1;
-        private bool _initialized;
-        private bool _disposed;
-        private bool _shouldCloseConnection;
         private Helper<int> _countHelper;
+        private bool _disposed;
+        private bool _initialized;
+        private int _numberOfRecords = -1;
         private Helper<object> _rowsHelper;
+        private bool _shouldCloseConnection;
 
         public DbConnection Connection { get; set; }
         public string TableName { get; set; }
         public CountStatementBuilder CountStatementBuilder { get; set; }
         public RowsStatementBuilder RowsStatementBuilder { get; set; }
 
-        ~DbRequestHandler()
-        {
-            Disposing(false);
-        }
-
         public int NumberOfRecords => _numberOfRecords < 0
             ? _numberOfRecords = QueryNumberOfRecords()
             : _numberOfRecords;
-
-        private int QueryNumberOfRecords()
-        {
-            InitializeIfNecessary();
-
-            return _countHelper
-                .Build()
-                .Execute();
-        }
 
         public virtual object DataSource(int maxRecords, int pageOffset)
         {
@@ -47,6 +33,26 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                 .PageOffset(pageOffset);
 
             return _rowsHelper
+                .Build()
+                .Execute();
+        }
+
+        public void Dispose()
+        {
+            Disposing(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DbRequestHandler()
+        {
+            Disposing(false);
+        }
+
+        private int QueryNumberOfRecords()
+        {
+            InitializeIfNecessary();
+
+            return _countHelper
                 .Build()
                 .Execute();
         }
@@ -84,17 +90,10 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                 _initialized = true;
             }
         }
-        
-        public void Dispose()
-        {
-            Disposing(true);
-            GC.SuppressFinalize(this);
-        }
 
         protected virtual void Disposing(bool disposing)
         {
             if (!_disposed)
-            {
                 lock (this)
                 {
                     _countHelper?.Dispose();
@@ -103,7 +102,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                         Connection.Close();
                     _disposed = true;
                 }
-            }
         }
 
         private class Helper<T> : IDisposable
@@ -113,6 +111,13 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             public StatementBuilder<T> StatementBuilder { get; set; }
             public string TableName { get; set; }
             public DbConnection Connection { get; set; }
+
+            public void Dispose()
+            {
+                DisposeStatement();
+                if (StatementBuilder is IDisposable disposable)
+                    disposable.Dispose();
+            }
 
             public IStatement<T> Build()
             {
@@ -129,13 +134,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             private void DisposeStatement()
             {
                 if (_previousStatement is IDisposable disposable)
-                    disposable.Dispose();
-            }
-
-            public void Dispose()
-            {
-                DisposeStatement();
-                if (StatementBuilder is IDisposable disposable)
                     disposable.Dispose();
             }
         }

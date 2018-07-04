@@ -7,13 +7,13 @@
 
         public RowsStatementBuilder MaxRecords(int maxRecords)
         {
-            this._maxRecords = maxRecords;
+            _maxRecords = maxRecords;
             return this;
         }
 
         public RowsStatementBuilder PageOffset(int pageOffset)
         {
-            this._pageOffset = pageOffset;
+            _pageOffset = pageOffset;
             return this;
         }
 

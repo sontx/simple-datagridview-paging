@@ -7,6 +7,15 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
     {
         private DbCommandBuilder _commandBuilder;
 
+        public void Dispose()
+        {
+            if (_commandBuilder != null)
+            {
+                _commandBuilder.Dispose();
+                _commandBuilder.DataAdapter?.Dispose();
+            }
+        }
+
         public UpdatableRowsStatementBuilder CommandBuilder(DbCommandBuilder commandBuilder)
         {
             _commandBuilder = commandBuilder;
@@ -18,15 +27,6 @@ namespace Code4Bugs.SimpleDataGridViewPaging.Statement.Builder
             var command = _connection.CreateCommand();
             command.CommandText = GetCommandText();
             return new AdapterStatement(command, _commandBuilder);
-        }
-
-        public void Dispose()
-        {
-            if (_commandBuilder != null)
-            {
-                _commandBuilder.Dispose();
-                _commandBuilder.DataAdapter?.Dispose();
-            }
         }
     }
 }
