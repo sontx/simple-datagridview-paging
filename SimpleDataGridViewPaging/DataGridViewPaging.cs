@@ -1,5 +1,7 @@
 ﻿using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 using System;
+using System.Data;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Code4Bugs.SimpleDataGridViewPaging
@@ -11,7 +13,8 @@ namespace Code4Bugs.SimpleDataGridViewPaging
     /// </summary>
     public partial class DataGridViewPaging : UserControl
     {
-        private bool _readonly;
+        private ReadOnlyMode _readonly;
+        private bool _computedReadOnly;
         private int _maxRecords = 100;
         private bool _autoHideNavigator;
 
@@ -22,6 +25,30 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         private bool IsNotPaging => TotalPages == 1 || !HasRows;
 
         private bool HasRows => _numberOfRecords > 0;
+
+        private bool ComputedReadOnly
+        {
+            get => _computedReadOnly;
+            set
+            {
+                _computedReadOnly = value;
+
+                if (_computedReadOnly)
+                {
+                    bindingNavigatorAddNewItem.Visible = false;
+                    bindingNavigatorDeleteItem.Visible = false;
+                    bindingNavigatorSeparator2.Visible = false;
+                }
+                else
+                {
+                    bindingNavigatorAddNewItem.Enabled = true;
+                    bindingNavigatorDeleteItem.Enabled = true;
+                    bindingNavigatorSeparator2.Enabled = true;
+                }
+
+                PerformLayout();
+            }
+        }
 
         public IDbRequestHandler DbRequestHandler
         {
@@ -71,7 +98,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             var totalItemsWidth = 0;
             var items = _navigator.Items;
             for (var i = 0; i < items.Count; i++)
-                totalItemsWidth += items[i].Width;
+                totalItemsWidth += items[i].Visible ? items[i].Width : 0;
 
             var containerWidth = _navigator.Width;
             var marginLeft = (containerWidth - totalItemsWidth) / 2;
@@ -86,7 +113,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         {
             if (IsNotPaging)
             {
-                if (_autoHideNavigator && ReadOnly)
+                if (_autoHideNavigator && _computedReadOnly)
                     _navigator.Visible = false;
             }
             else
@@ -128,6 +155,14 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         {
             bindingNavigatorMoveFirstItem.Enabled = enabled;
             bindingNavigatorMovePreviousItem.Enabled = enabled;
+        }
+
+        private void ComputeReadOnlyIfNecessary()
+        {
+            if (DataSource != null && ReadOnly == ReadOnlyMode.Default)
+            {
+                ComputedReadOnly = !(DataSource is DataTable);
+            }
         }
     }
 }

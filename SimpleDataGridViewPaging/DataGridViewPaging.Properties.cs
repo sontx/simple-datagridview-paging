@@ -20,31 +20,21 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         public BindingNavigator Navigator => _navigator;
 
         [Browsable(true)]
+        [DefaultValue(typeof(ReadOnlyMode), "Default")]
         [Description("Gets or sets a value indicating whether DataGridView in the DataGridViewPaging is read-only.")]
         [Category(CategoryBehavior)]
-        public bool ReadOnly
+        public ReadOnlyMode ReadOnly
         {
             get => _readonly;
             set
             {
                 _readonly = value;
 
-                GridView.ReadOnly = _readonly;
-
-                if (ReadOnly)
+                if (_readonly != ReadOnlyMode.Default)
                 {
-                    bindingNavigatorAddNewItem.Visible = false;
-                    bindingNavigatorDeleteItem.Visible = false;
-                    bindingNavigatorSeparator2.Visible = false;
+                    ComputedReadOnly = _readonly == ReadOnlyMode.True;
+                    GridView.ReadOnly = ComputedReadOnly;
                 }
-                else
-                {
-                    bindingNavigatorAddNewItem.Enabled = true;
-                    bindingNavigatorDeleteItem.Enabled = true;
-                    bindingNavigatorSeparator2.Enabled = true;
-                }
-
-                AlignNavigatorToCenter();
             }
         }
 
@@ -91,9 +81,18 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             set
             {
                 if (InvokeRequired)
-                    BeginInvoke((MethodInvoker)delegate { bindingSource.DataSource = value; });
+                {
+                    BeginInvoke((MethodInvoker) delegate
+                    {
+                        bindingSource.DataSource = value;
+                        ComputeReadOnlyIfNecessary();
+                    });
+                }
                 else
+                {
                     bindingSource.DataSource = value;
+                    ComputeReadOnlyIfNecessary();
+                }
             }
         }
     }

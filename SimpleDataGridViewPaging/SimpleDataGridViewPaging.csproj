@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Exceptions\QuantityRangeException.cs" />
     <Compile Include="DbRequestHandlerHelper.cs" />
+    <Compile Include="ReadOnlyMode.cs" />
     <Compile Include="Statement\AdapterStatement.cs" />
     <Compile Include="Statement\Builder\CountStatementBuilder.cs" />
     <Compile Include="DbRequestHandler.cs" />

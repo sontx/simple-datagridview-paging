@@ -41,7 +41,6 @@
             this.dataGridViewPaging1.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridViewPaging1.MaxRecords = 100;
             this.dataGridViewPaging1.Name = "dataGridViewPaging1";
-            this.dataGridViewPaging1.ReadOnly = false;
             this.dataGridViewPaging1.Size = new System.Drawing.Size(616, 460);
             this.dataGridViewPaging1.TabIndex = 0;
             // 
