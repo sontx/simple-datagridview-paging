@@ -14,9 +14,9 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (InvokeRequired)
-                BeginInvoke((MethodInvoker)UpdateNavigator);
+                BeginInvoke((MethodInvoker)UpdateNavigatorButtons);
             else
-                UpdateNavigator();
+                UpdateNavigatorButtons();
         }
 
         private void bindingNavigatorMoveFirstItem_Click(object sender, EventArgs e)

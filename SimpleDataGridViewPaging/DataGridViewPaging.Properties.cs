@@ -1,4 +1,5 @@
-﻿using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
+﻿using System;
+using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -6,6 +7,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
 {
     public partial class DataGridViewPaging
     {
+        private NavigatorHorizontal _navigatorHorizontal;
         private const string CategoryControl = "Control";
         private const string CategoryBehavior = "Behavior";
 
@@ -93,6 +95,19 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                     bindingSource.DataSource = value;
                     ComputeReadOnlyIfNecessary();
                 }
+            }
+        }
+
+        [Browsable(true)]
+        [Description("Gets or sets horizontally of navigator.")]
+        [Category(CategoryBehavior)]
+        public NavigatorHorizontal NavigatorHorizontal
+        {
+            get => _navigatorHorizontal;
+            set
+            {
+                _navigatorHorizontal = value;
+                UpdateNavigatorHorizontal();
             }
         }
     }

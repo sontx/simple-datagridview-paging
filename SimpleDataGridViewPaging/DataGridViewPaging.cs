@@ -1,7 +1,6 @@
 ﻿using Code4Bugs.SimpleDataGridViewPaging.Exceptions;
 using System;
 using System.Data;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Code4Bugs.SimpleDataGridViewPaging
@@ -13,6 +12,8 @@ namespace Code4Bugs.SimpleDataGridViewPaging
     /// </summary>
     public partial class DataGridViewPaging : UserControl
     {
+        private const int MagicNumber = 10;
+
         private ReadOnlyMode _readonly;
         private bool _computedReadOnly;
         private int _maxRecords = 100;
@@ -87,29 +88,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                 DataSource = DbRequestHandler.DataSource(MaxRecords, _currentPageOffset);
         }
 
-        protected override void OnLayout(LayoutEventArgs e)
-        {
-            base.OnLayout(e);
-            AlignNavigatorToCenter();
-        }
-
-        private void AlignNavigatorToCenter()
-        {
-            var totalItemsWidth = 0;
-            var items = _navigator.Items;
-            for (var i = 0; i < items.Count; i++)
-                totalItemsWidth += items[i].Visible ? items[i].Width : 0;
-
-            var containerWidth = _navigator.Width;
-            var marginLeft = (containerWidth - totalItemsWidth) / 2;
-
-            var firstItem = items[0];
-            var firstItemMargin = firstItem.Margin;
-            firstItemMargin.Left = marginLeft;
-            firstItem.Margin = firstItemMargin;
-        }
-
-        private void UpdateNavigator()
+        private void UpdateNavigatorButtons()
         {
             if (IsNotPaging)
             {
@@ -163,6 +142,78 @@ namespace Code4Bugs.SimpleDataGridViewPaging
             {
                 ComputedReadOnly = !(DataSource is DataTable);
             }
+        }
+
+        protected override void OnLayout(LayoutEventArgs e)
+        {
+            base.OnLayout(e);
+            UpdateNavigatorHorizontal();
+        }
+
+        private void UpdateNavigatorHorizontal()
+        {
+            switch (_navigatorHorizontal)
+            {
+                case NavigatorHorizontal.Default:
+                    AlignNavigatorToCenter();
+                    break;
+
+                case NavigatorHorizontal.Left:
+                    AlignNavigatorToLeft();
+                    break;
+
+                case NavigatorHorizontal.Center:
+                    AlignNavigatorToCenter();
+                    break;
+
+                case NavigatorHorizontal.Right:
+                    AlignNavigatorToRight();
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void AlignNavigatorToCenter()
+        {
+            var totalItemsWidth = 0;
+            var items = _navigator.Items;
+            for (var i = 0; i < items.Count; i++)
+                totalItemsWidth += items[i].Visible ? items[i].Width : 0;
+
+            var containerWidth = _navigator.Width;
+            var marginLeft = (containerWidth - totalItemsWidth) / 2;
+
+            var firstItem = items[0];
+            var firstItemMargin = firstItem.Margin;
+            firstItemMargin.Left = marginLeft;
+            firstItem.Margin = firstItemMargin;
+        }
+
+        private void AlignNavigatorToLeft()
+        {
+            var items = _navigator.Items;
+            var firstItem = items[0];
+            var firstItemMargin = firstItem.Margin;
+            firstItemMargin.Left = 0;
+            firstItem.Margin = firstItemMargin;
+        }
+
+        private void AlignNavigatorToRight()
+        {
+            var totalItemsWidth = 0;
+            var items = _navigator.Items;
+            for (var i = 0; i < items.Count; i++)
+                totalItemsWidth += items[i].Visible ? items[i].Width : 0;
+
+            var containerWidth = _navigator.Width;
+            var marginLeft = containerWidth - totalItemsWidth - MagicNumber;
+
+            var firstItem = items[0];
+            var firstItemMargin = firstItem.Margin;
+            firstItemMargin.Left = marginLeft;
+            firstItem.Margin = firstItemMargin;
         }
     }
 }
