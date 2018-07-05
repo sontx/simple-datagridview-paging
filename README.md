@@ -1,3 +1,5 @@
+[![Gitter chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/simple-datagridview-paging/Lobby#)
+
 **simple-datagridview-paging** is a simple UserControl that shows the data-table and paging automatically.
 With this library, you can also edit the data and it will be saved to the database automatically.
 ![](https://3.bp.blogspot.com/-76IqcXrupWc/Wzzowu0OxNI/AAAAAAAAVRs/J2Xwqp4aN7ce02rEfMB47HmlGxQpwoYOgCLcBGAs/Capture.PNG)
