@@ -71,7 +71,11 @@ namespace Code4Bugs.SimpleDataGridViewPaging
         private void QueryData()
         {
             if (DbRequestHandler != null)
+            {
+                if (DataSource is IDisposable disposable)
+                    disposable.Dispose();
                 DataSource = DbRequestHandler.DataSource(MaxRecords, _currentPageOffset);
+            }
         }
 
         private void UpdateNavigatorButtons()
