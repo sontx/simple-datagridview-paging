@@ -52,7 +52,7 @@ namespace Code4Bugs.SimpleDataGridViewPaging
                 if (pageNumber == CurrentPage) return;
 
                 var totalPages = TotalPages;
-                if (pageNumber < 1 || pageNumber > totalPages)
+                if (pageNumber >= 1 && pageNumber <= totalPages)
                 {
                     _currentPageOffset = (pageNumber - 1) * MaxRecords;
                     QueryData();
