@@ -1,4 +1,4 @@
-[![Gitter chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/simple-datagridview-paging/Lobby#)
+![NuGet](https://buildstats.info/nuget/SimpleDataGridViewPaging)
 
 **simple-datagridview-paging** is a simple UserControl that shows the data-table and paging automatically.
 With this library, you can also edit the data and it will be saved to the database automatically.
